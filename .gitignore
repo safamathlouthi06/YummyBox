@@ -1,0 +1,19 @@
+# Python stuff
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Django stuff
+*.sqlite3
+db.sqlite3
+/media/
+staticfiles/
+.env
+
+# VSCode, etc.
+.vscode/
+*.idea/

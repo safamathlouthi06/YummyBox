@@ -1,0 +1,529 @@
+
+{% load static %}
+
+{% block extra_css %}
+<style>
+    /* Styles pour la page de connexion */
+    .auth-page {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .auth-page::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ff7e5f' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+        opacity: 0.3;
+    }
+
+    .auth-container {
+        width: 100%;
+        max-width: 450px;
+        z-index: 1;
+    }
+
+    .auth-card {
+        background: white;
+        border-radius: 20px;
+        padding: 3rem;
+        box-shadow: 0 15px 35px rgba(50, 50, 93, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);
+        transform: translateY(0);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .auth-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(50, 50, 93, 0.15), 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .auth-header {
+        text-align: center;
+        margin-bottom: 2.5rem;
+    }
+
+    .auth-logo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        margin-bottom: 1.5rem;
+        color: #ff7e5f;
+        font-size: 2rem;
+        font-weight: 700;
+    }
+
+    .auth-logo-icon {
+        font-size: 2.5rem;
+        animation: bounce 2s infinite;
+    }
+
+    .auth-title {
+        font-size: 2.2rem;
+        color: #333;
+        margin-bottom: 0.5rem;
+        font-weight: 700;
+        position: relative;
+        display: inline-block;
+    }
+
+    .auth-title::after {
+        content: '';
+        position: absolute;
+        bottom: -8px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(to right, #ff7e5f, #feb47b);
+        border-radius: 2px;
+    }
+
+    .auth-subtitle {
+        color: #666;
+        font-size: 1.1rem;
+        margin-top: 1rem;
+    }
+
+    /* Styles du formulaire */
+    .auth-form {
+        margin-bottom: 2rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.8rem;
+        position: relative;
+    }
+
+    .form-label {
+        display: block;
+        margin-bottom: 0.6rem;
+        color: #555;
+        font-weight: 600;
+        font-size: 0.95rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .form-label-icon {
+        color: #ff7e5f;
+        font-size: 1.1rem;
+    }
+
+    .form-input {
+        width: 100%;
+        padding: 1rem 1.2rem;
+        border: 2px solid #e1e5eb;
+        border-radius: 12px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background-color: #f8f9fa;
+    }
+
+    .form-input:focus {
+        outline: none;
+        border-color: #ff7e5f;
+        background-color: white;
+        box-shadow: 0 0 0 3px rgba(255, 126, 95, 0.1);
+    }
+
+    .form-input::placeholder {
+        color: #aaa;
+    }
+
+    /* Checkbox pour "Se souvenir de moi" */
+    .remember-me {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 1.5rem;
+    }
+
+    .remember-checkbox {
+        width: 18px;
+        height: 18px;
+        border-radius: 4px;
+        border: 2px solid #ddd;
+        cursor: pointer;
+        position: relative;
+        transition: all 0.3s;
+    }
+
+    .remember-checkbox:checked {
+        background-color: #ff7e5f;
+        border-color: #ff7e5f;
+    }
+
+    .remember-label {
+        color: #555;
+        font-size: 0.95rem;
+        cursor: pointer;
+    }
+
+    /* Bouton de connexion */
+    .auth-btn {
+        width: 100%;
+        padding: 1.2rem;
+        background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        box-shadow: 0 6px 20px rgba(255, 126, 95, 0.3);
+        margin-top: 0.5rem;
+    }
+
+    .auth-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(255, 126, 95, 0.4);
+        background: linear-gradient(135deg, #ff6b4a 0%, #fea05c 100%);
+    }
+
+    .auth-btn:active {
+        transform: translateY(-1px);
+    }
+
+    .auth-btn-icon {
+        font-size: 1.2rem;
+    }
+
+    /* Lien mot de passe oublié */
+    .forgot-password {
+        text-align: center;
+        margin: 1.5rem 0;
+    }
+
+    .forgot-link {
+        color: #666;
+        text-decoration: none;
+        font-size: 0.95rem;
+        transition: color 0.3s;
+    }
+
+    .forgot-link:hover {
+        color: #ff7e5f;
+        text-decoration: underline;
+    }
+
+    /* Séparateur */
+    .auth-separator {
+        display: flex;
+        align-items: center;
+        margin: 2rem 0;
+        color: #999;
+    }
+
+    .auth-separator::before,
+    .auth-separator::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        background: #eee;
+    }
+
+    .auth-separator span {
+        padding: 0 1rem;
+        font-size: 0.9rem;
+    }
+
+    /* Lien d'inscription */
+    .auth-footer {
+        text-align: center;
+        margin-top: 2rem;
+        padding-top: 2rem;
+        border-top: 1px solid #eee;
+    }
+
+    .auth-footer-text {
+        color: #666;
+        font-size: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .signup-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 0.9rem 2rem;
+        background: #f8f9fa;
+        color: #ff7e5f;
+        text-decoration: none;
+        border-radius: 12px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+    }
+
+    .signup-link:hover {
+        background: white;
+        border-color: #ff7e5f;
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(255, 126, 95, 0.1);
+    }
+
+    .signup-icon {
+        font-size: 1.1rem;
+    }
+
+    /* Messages d'erreur */
+    .error-message {
+        color: #dc3545;
+        font-size: 0.85rem;
+        margin-top: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .error-icon {
+        font-size: 0.9rem;
+    }
+
+    .form-input.error {
+        border-color: #dc3545;
+        background-color: #fff8f8;
+    }
+
+    /* Animation */
+    @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-5px); }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .auth-page {
+            padding: 1rem;
+        }
+        
+        .auth-card {
+            padding: 2rem 1.5rem;
+        }
+        
+        .auth-title {
+            font-size: 1.8rem;
+        }
+        
+        .auth-logo {
+            font-size: 1.8rem;
+        }
+        
+        .auth-logo-icon {
+            font-size: 2rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .auth-card {
+            padding: 1.5rem 1rem;
+        }
+        
+        .auth-title {
+            font-size: 1.6rem;
+        }
+        
+        .auth-btn {
+            padding: 1rem;
+            font-size: 1rem;
+        }
+        
+        .signup-link {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="auth-page">
+    <div class="auth-container">
+        <div class="auth-card">
+            <!-- En-tête avec logo -->
+            <div class="auth-header">
+                <div class="auth-logo">
+                    <span class="auth-logo-icon">🍽️</span>
+                    <span>YummyBox</span>
+                </div>
+                
+                <h2 class="auth-title">Connexion</h2>
+                <p class="auth-subtitle">Accédez à votre espace recettes</p>
+            </div>
+
+            <!-- Formulaire de connexion -->
+            <form method="POST" class="auth-form">
+                {% csrf_token %}
+                
+                <!-- Gestion des erreurs globales -->
+                {% if form.non_field_errors %}
+                <div class="error-message" style="margin-bottom: 1.5rem;">
+                    <i class="fas fa-exclamation-circle error-icon"></i>
+                    {{ form.non_field_errors|first }}
+                </div>
+                {% endif %}
+
+                <!-- Champ Nom d'utilisateur -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-user form-label-icon"></i>
+                        Nom d'utilisateur
+                    </label>
+                    <input type="text" 
+                           name="username" 
+                           class="form-input {% if form.username.errors %}error{% endif %}"
+                           placeholder="Entrez votre nom d'utilisateur"
+                           value="{{ form.username.value|default:'' }}"
+                           required>
+                    {% if form.username.errors %}
+                    <div class="error-message">
+                        <i class="fas fa-exclamation-circle error-icon"></i>
+                        {{ form.username.errors|first }}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Champ Mot de passe -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-lock form-label-icon"></i>
+                        Mot de passe
+                    </label>
+                    <input type="password" 
+                           name="password" 
+                           class="form-input {% if form.password.errors %}error{% endif %}"
+                           placeholder="Entrez votre mot de passe"
+                           required>
+                    {% if form.password.errors %}
+                    <div class="error-message">
+                        <i class="fas fa-exclamation-circle error-icon"></i>
+                        {{ form.password.errors|first }}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Option "Se souvenir de moi" -->
+                <div class="remember-me">
+                    <input type="checkbox" id="remember" name="remember" class="remember-checkbox">
+                    <label for="remember" class="remember-label">Se souvenir de moi</label>
+                </div>
+
+                <!-- Bouton de connexion -->
+                <button type="submit" class="auth-btn">
+                    <i class="fas fa-sign-in-alt auth-btn-icon"></i>
+                    Se connecter
+                </button>
+            </form>
+
+            <!-- Lien mot de passe oublié -->
+            <div class="forgot-password">
+                <a href="#" class="forgot-link">
+                    <i class="fas fa-key"></i>
+                    Mot de passe oublié ?
+                </a>
+            </div>
+
+            <!-- Pied de page avec lien d'inscription -->
+            <div class="auth-footer">
+                <p class="auth-footer-text">Pas encore de compte ?</p>
+                <a href="{% url 'accounts:signup' %}" class="signup-link">
+                    <i class="fas fa-user-plus signup-icon"></i>
+                    Créer un compte gratuit
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Animation pour les inputs au focus
+        const inputs = document.querySelectorAll('.form-input');
+        
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'translateY(-2px)';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'translateY(0)';
+            });
+        });
+        
+        // Animation pour le bouton
+        const authBtn = document.querySelector('.auth-btn');
+        if (authBtn) {
+            authBtn.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-3px)';
+            });
+            
+            authBtn.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        }
+        
+        // Validation en temps réel
+        const form = document.querySelector('.auth-form');
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                let valid = true;
+                
+                // Validation basique
+                inputs.forEach(input => {
+                    if (!input.value.trim()) {
+                        input.classList.add('error');
+                        valid = false;
+                    }
+                });
+                
+                if (!valid) {
+                    e.preventDefault();
+                    // Animation d'erreur
+                    form.style.animation = 'shake 0.5s';
+                    setTimeout(() => {
+                        form.style.animation = '';
+                    }, 500);
+                }
+            });
+            
+            // Supprimer l'erreur quand l'utilisateur commence à taper
+            inputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    if (this.value.trim()) {
+                        this.classList.remove('error');
+                    }
+                });
+            });
+        }
+        
+        // Ajouter le CSS pour l'animation shake
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+                20%, 40%, 60%, 80% { transform: translateX(5px); }
+            }
+        `;
+        document.head.appendChild(style);
+    });
+</script>
+{% endblock %}

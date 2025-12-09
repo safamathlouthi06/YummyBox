@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>YummyBox — Recettes</h1>
+
+{% if user.is_authenticated and user.profile.role == 'chef' %}
+    <a href="{% url 'recipes:recipe_add' %}">Ajouter une recette</a>
+{% endif %}
+
+<ul>
+    {% for recipe in recipes %}
+    <li>
+        <a href="{% url 'recipes:recipe_detail' recipe.id %}">
+            {% if recipe.image %}
+                <img src="{{ recipe.image.url }}" width="120">
+            {% endif %}
+            <h3>{{ recipe.title }}</h3>
+        </a>
+        <p>{{ recipe.category }}</p>
+    </li>
+    {% endfor %}
+</ul>  
+{% endblock %}

@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YummyBox - {% block title %}{% endblock %}</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome pour les icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #fefefe;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
+            padding: 1rem 2rem;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-decoration: none;
+            color: white;
+        }
+        
+        .logo-icon {
+            font-size: 2.2rem;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .logo-text {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.2rem;
+            font-weight: 700;
+        }
+        
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .nav-link i {
+            font-size: 1.2rem;
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: white;
+            color: #ff7e5f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.8rem;
+            cursor: pointer;
+        }
+        
+        /* Main Content */
+        main {
+            flex: 1;
+            padding: 2rem 1rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        /* Alert Messages */
+        .alert-container {
+            max-width: 800px;
+            margin: 0 auto 2rem;
+        }
+        
+        .alert {
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border-left: 5px solid #28a745;
+        }
+        
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border-left: 5px solid #dc3545;
+        }
+        
+        .alert-info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border-left: 5px solid #17a2b8;
+        }
+        
+        .alert-warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border-left: 5px solid #ffc107;
+        }
+        
+        /* Footer Styles */
+        footer {
+            background: linear-gradient(135deg, #333 0%, #555 100%);
+            color: white;
+            padding: 2.5rem 1rem 1.5rem;
+            margin-top: 3rem;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            padding-bottom: 2rem;
+        }
+        
+        .footer-section h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1.2rem;
+            color: #ff7e5f;
+            font-weight: 600;
+        }
+        
+        .footer-section p, .footer-section a {
+            color: #ddd;
+            margin-bottom: 0.8rem;
+            display: block;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-section a:hover {
+            color: #ff7e5f;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .social-icons a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+        
+        .social-icons a:hover {
+            background-color: #ff7e5f;
+            transform: translateY(-3px);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        /* Back to top button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: #ff7e5f;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(255, 126, 95, 0.3);
+            transition: all 0.3s;
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:hover {
+            background-color: #ff6b4a;
+            transform: translateY(-5px);
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            header {
+                padding: 1rem;
+                flex-wrap: wrap;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            nav {
+                display: none;
+                width: 100%;
+                flex-direction: column;
+                align-items: flex-start;
+                margin-top: 1rem;
+                gap: 0.5rem;
+            }
+            
+            nav.active {
+                display: flex;
+            }
+            
+            .nav-link {
+                width: 100%;
+                padding: 0.8rem;
+            }
+            
+            .logo-text {
+                font-size: 1.8rem;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .back-to-top {
+                bottom: 20px;
+                right: 20px;
+                width: 45px;
+                height: 45px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            main {
+                padding: 1rem 0.5rem;
+            }
+            
+            .logo-text {
+                font-size: 1.6rem;
+            }
+            
+            .logo-icon {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+    
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <a href="{% url 'recipes:recipe_list' %}" class="logo">
+            <span class="logo-icon">🍽️</span>
+            <span class="logo-text">YummyBox</span>
+        </a>
+        
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <i class="fas fa-bars"></i>
+        </button>
+        
+        <nav id="mainNav">
+            {% if user.is_authenticated %}
+                <div class="user-menu">
+                    <div class="user-avatar">
+                        {{ user.username|first|upper }}
+                    </div>
+                    <a href="{% url 'recipes:recipe_list' %}" class="nav-link">
+                        <i class="fas fa-home"></i>
+                        <span>Accueil</span>
+                    </a>
+                    
+                    {% if user.profile.role == 'chef' %}
+                    <a href="{% url 'recipes:recipe_add' %}" class="nav-link">
+                        <i class="fas fa-plus-circle"></i>
+                        <span>Nouvelle recette</span>
+                    </a>
+                    {% endif %}
+                    
+                   
+                    
+                    <a href="{% url 'accounts:logout' %}" class="nav-link">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Déconnexion</span>
+                    </a>
+                </div>
+            {% else %}
+                <a href="{% url 'recipes:recipe_list' %}" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    <span>Accueil</span>
+                </a>
+                <a href="{% url 'accounts:login' %}" class="nav-link">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>Connexion</span>
+                </a>
+                <a href="{% url 'accounts:signup' %}" class="nav-link">
+                    <i class="fas fa-user-plus"></i>
+                    <span>Inscription</span>
+                </a>
+            {% endif %}
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Alert Messages -->
+        {% if messages %}
+        <div class="alert-container">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {% if message.tags == 'success' %}
+                <i class="fas fa-check-circle"></i>
+                {% elif message.tags == 'error' %}
+                <i class="fas fa-exclamation-circle"></i>
+                {% elif message.tags == 'warning' %}
+                <i class="fas fa-exclamation-triangle"></i>
+                {% else %}
+                <i class="fas fa-info-circle"></i>
+                {% endif %}
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <!-- Page Content -->
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>YummyBox</h3>
+                <p>Partagez, découvrez et savourez des recettes délicieuses faites avec amour.</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-pinterest-p"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Navigation</h3>
+                <a href="{% url 'recipes:recipe_list' %}">Toutes les recettes</a>
+                <a href="#">Recettes populaires</a>
+                <a href="#">Chefs en vedette</a>
+                <a href="#">Catégories</a>
+            </div>
+            
+            <div class="footer-section">
+                <h3>À propos</h3>
+                <a href="#">Qui sommes-nous ?</a>
+                <a href="#">Contact</a>
+                <a href="#">Mentions légales</a>
+                <a href="#">Politique de confidentialité</a>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Rejoignez-nous</h3>
+                <p>Devenez chef YummyBox et partagez vos créations culinaires avec notre communauté.</p>
+                {% if not user.is_authenticated %}
+                <a href="{% url 'accounts:signup' %}" class="nav-link" style="display: inline-flex; width: auto; margin-top: 10px;">
+                    <i class="fas fa-user-plus"></i>
+                    <span>S'inscrire gratuitement</span>
+                </a>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            © 2025 YummyBox – Tous droits réservés. | Conçu avec ❤️ pour les amateurs de cuisine
+        </div>
+    </footer>
+    
+    <!-- Back to Top Button -->
+    <a href="#" class="back-to-top" id="backToTop">
+        <i class="fas fa-chevron-up"></i>
+    </a>
+
+    <!-- JavaScript -->
+    <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mainNav = document.getElementById('mainNav');
+        
+        if (mobileMenuBtn && mainNav) {
+            mobileMenuBtn.addEventListener('click', function() {
+                mainNav.classList.toggle('active');
+                mobileMenuBtn.innerHTML = mainNav.classList.contains('active') 
+                    ? '<i class="fas fa-times"></i>' 
+                    : '<i class="fas fa-bars"></i>';
+            });
+            
+            // Close menu when clicking outside on mobile
+            document.addEventListener('click', function(event) {
+                if (window.innerWidth <= 768) {
+                    if (!mainNav.contains(event.target) && !mobileMenuBtn.contains(event.target)) {
+                        mainNav.classList.remove('active');
+                        mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                    }
+                }
+            });
+        }
+        
+        // Back to top button
+        const backToTopBtn = document.getElementById('backToTop');
+        
+        if (backToTopBtn) {
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    backToTopBtn.classList.add('visible');
+                } else {
+                    backToTopBtn.classList.remove('visible');
+                }
+            });
+            
+            backToTopBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
+        
+        // Auto-hide alerts after 5 seconds
+        document.addEventListener('DOMContentLoaded', function() {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                setTimeout(() => {
+                    alert.style.opacity = '0';
+                    alert.style.transform = 'translateY(-20px)';
+                    setTimeout(() => {
+                        if (alert.parentNode) {
+                            alert.parentNode.removeChild(alert);
+                        }
+                    }, 300);
+                }, 5000);
+            });
+        });
+        
+        // Close alert on click
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.alert')) {
+                const alert = e.target.closest('.alert');
+                alert.style.opacity = '0';
+                alert.style.transform = 'translateY(-20px)';
+                setTimeout(() => {
+                    if (alert.parentNode) {
+                        alert.parentNode.removeChild(alert);
+                    }
+                }, 300);
+            }
+        });
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

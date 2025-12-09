@@ -1,0 +1,882 @@
+
+{% load static %}
+
+{% block extra_css %}
+<style>
+    /* Styles pour la page d'inscription */
+    .signup-page {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .signup-page::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ff7e5f' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+        opacity: 0.3;
+    }
+
+    .signup-container {
+        width: 100%;
+        max-width: 500px;
+        z-index: 1;
+    }
+
+    .signup-card {
+        background: white;
+        border-radius: 20px;
+        padding: 3rem;
+        box-shadow: 0 20px 40px rgba(50, 50, 93, 0.15), 0 10px 20px rgba(0, 0, 0, 0.1);
+        transform: translateY(0);
+        transition: transform 0.3s ease;
+    }
+
+    .signup-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .signup-header {
+        text-align: center;
+        margin-bottom: 2.5rem;
+    }
+
+    .signup-logo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        margin-bottom: 1.5rem;
+        color: #ff7e5f;
+        font-size: 2rem;
+        font-weight: 700;
+    }
+
+    .signup-logo-icon {
+        font-size: 2.5rem;
+        animation: bounce 2s infinite;
+    }
+
+    .signup-title {
+        font-size: 2.2rem;
+        color: #333;
+        margin-bottom: 0.5rem;
+        font-weight: 700;
+        position: relative;
+        display: inline-block;
+    }
+
+    .signup-title::after {
+        content: '';
+        position: absolute;
+        bottom: -8px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 3px;
+        background: linear-gradient(to right, #ff7e5f, #feb47b);
+        border-radius: 2px;
+    }
+
+    .signup-subtitle {
+        color: #666;
+        font-size: 1.1rem;
+        margin-top: 1rem;
+    }
+
+    /* Formulaire */
+    .signup-form {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+        margin-bottom: 1.8rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.8rem;
+        position: relative;
+    }
+
+    .form-label {
+        display: block;
+        margin-bottom: 0.6rem;
+        color: #555;
+        font-weight: 600;
+        font-size: 0.95rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .form-label-icon {
+        color: #ff7e5f;
+        font-size: 1.1rem;
+        width: 20px;
+    }
+
+    .form-input {
+        width: 100%;
+        padding: 1rem 1.2rem;
+        border: 2px solid #e1e5eb;
+        border-radius: 12px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background-color: #f8f9fa;
+    }
+
+    .form-input:focus {
+        outline: none;
+        border-color: #ff7e5f;
+        background-color: white;
+        box-shadow: 0 0 0 3px rgba(255, 126, 95, 0.1);
+    }
+
+    .form-input::placeholder {
+        color: #aaa;
+    }
+
+    /* Champ de sélection du rôle */
+    .role-selector {
+        margin-bottom: 2rem;
+    }
+
+    .role-title {
+        color: #555;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .role-options {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+
+    .role-option {
+        position: relative;
+    }
+
+    .role-input {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .role-label {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 1.5rem 1rem;
+        border: 2px solid #e1e5eb;
+        border-radius: 12px;
+        background: #f8f9fa;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-align: center;
+    }
+
+    .role-label:hover {
+        border-color: #ff7e5f;
+        background: white;
+        transform: translateY(-2px);
+    }
+
+    .role-input:checked + .role-label {
+        border-color: #ff7e5f;
+        background: linear-gradient(135deg, rgba(255, 126, 95, 0.1), rgba(254, 180, 123, 0.1));
+        box-shadow: 0 5px 15px rgba(255, 126, 95, 0.1);
+    }
+
+    .role-icon {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+        color: #ff7e5f;
+    }
+
+    .role-name {
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 0.3rem;
+    }
+
+    .role-desc {
+        font-size: 0.85rem;
+        color: #666;
+        line-height: 1.3;
+    }
+
+    /* Conditions d'utilisation */
+    .terms {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        margin: 2rem 0;
+        padding: 1rem;
+        background: #f8f9fa;
+        border-radius: 10px;
+    }
+
+    .terms-checkbox {
+        margin-top: 3px;
+        width: 18px;
+        height: 18px;
+        border-radius: 4px;
+        border: 2px solid #ddd;
+        cursor: pointer;
+        transition: all 0.3s;
+        flex-shrink: 0;
+    }
+
+    .terms-checkbox:checked {
+        background-color: #ff7e5f;
+        border-color: #ff7e5f;
+    }
+
+    .terms-label {
+        color: #555;
+        font-size: 0.9rem;
+        line-height: 1.5;
+        cursor: pointer;
+    }
+
+    .terms-link {
+        color: #ff7e5f;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .terms-link:hover {
+        text-decoration: underline;
+    }
+
+    /* Bouton d'inscription */
+    .signup-btn {
+        width: 100%;
+        padding: 1.2rem;
+        background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        box-shadow: 0 6px 20px rgba(255, 126, 95, 0.3);
+    }
+
+    .signup-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(255, 126, 95, 0.4);
+        background: linear-gradient(135deg, #ff6b4a 0%, #fea05c 100%);
+    }
+
+    .signup-btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    .signup-btn-icon {
+        font-size: 1.2rem;
+    }
+
+    /* Lien de connexion */
+    .login-link-container {
+        text-align: center;
+        margin-top: 2rem;
+        padding-top: 2rem;
+        border-top: 1px solid #eee;
+    }
+
+    .login-link-text {
+        color: #666;
+        font-size: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .login-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 0.9rem 2rem;
+        background: #f8f9fa;
+        color: #555;
+        text-decoration: none;
+        border-radius: 12px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+    }
+
+    .login-link:hover {
+        background: white;
+        border-color: #ff7e5f;
+        color: #ff7e5f;
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(255, 126, 95, 0.1);
+    }
+
+    .login-link-icon {
+        font-size: 1.1rem;
+    }
+
+    /* Messages d'erreur */
+    .error-message {
+        color: #dc3545;
+        font-size: 0.85rem;
+        margin-top: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .error-icon {
+        font-size: 0.9rem;
+    }
+
+    .form-input.error {
+        border-color: #dc3545;
+        background-color: #fff8f8;
+    }
+
+    /* Indicateur de force du mot de passe */
+    .password-strength {
+        margin-top: 0.5rem;
+        height: 4px;
+        background: #e1e5eb;
+        border-radius: 2px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .strength-bar {
+        height: 100%;
+        width: 0%;
+        background: #dc3545;
+        transition: all 0.3s ease;
+        border-radius: 2px;
+    }
+
+    .strength-bar.weak {
+        width: 33%;
+        background: #dc3545;
+    }
+
+    .strength-bar.medium {
+        width: 66%;
+        background: #ffc107;
+    }
+
+    .strength-bar.strong {
+        width: 100%;
+        background: #28a745;
+    }
+
+    .strength-text {
+        font-size: 0.8rem;
+        color: #666;
+        margin-top: 0.3rem;
+        text-align: right;
+    }
+
+    /* Animation */
+    @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-5px); }
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .signup-page {
+            padding: 1rem;
+        }
+        
+        .signup-card {
+            padding: 2rem 1.5rem;
+        }
+        
+        .form-row {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        
+        .role-options {
+            grid-template-columns: 1fr;
+        }
+        
+        .signup-title {
+            font-size: 1.8rem;
+        }
+        
+        .signup-logo {
+            font-size: 1.8rem;
+        }
+        
+        .signup-logo-icon {
+            font-size: 2rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .signup-card {
+            padding: 1.5rem 1rem;
+        }
+        
+        .signup-title {
+            font-size: 1.6rem;
+        }
+        
+        .signup-btn {
+            padding: 1rem;
+            font-size: 1rem;
+        }
+        
+        .login-link {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="signup-page">
+    <div class="signup-container">
+        <div class="signup-card">
+            <!-- En-tête avec logo -->
+            <div class="signup-header">
+                <div class="signup-logo">
+                    <span class="signup-logo-icon">🍽️</span>
+                    <span>YummyBox</span>
+                </div>
+                
+                <h1 class="signup-title">Inscription</h1>
+                <p class="signup-subtitle">Rejoignez notre communauté culinaire</p>
+            </div>
+
+            <!-- Formulaire d'inscription -->
+            <form method="post" class="signup-form" id="signupForm">
+                {% csrf_token %}
+                
+                <!-- Gestion des erreurs globales -->
+                {% if form.non_field_errors %}
+                <div class="error-message" style="margin-bottom: 1.5rem;">
+                    <i class="fas fa-exclamation-circle error-icon"></i>
+                    {{ form.non_field_errors|first }}
+                </div>
+                {% endif %}
+
+                <!-- Nom et Prénom -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-user form-label-icon"></i>
+                            Prénom
+                        </label>
+                        <input type="text" 
+                               name="first_name" 
+                               class="form-input {% if form.first_name.errors %}error{% endif %}"
+                               placeholder="Votre prénom"
+                               value="{{ form.first_name.value|default:'' }}"
+                               required>
+                        {% if form.first_name.errors %}
+                        <div class="error-message">
+                            <i class="fas fa-exclamation-circle error-icon"></i>
+                            {{ form.first_name.errors|first }}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-user form-label-icon"></i>
+                            Nom
+                        </label>
+                        <input type="text" 
+                               name="last_name" 
+                               class="form-input {% if form.last_name.errors %}error{% endif %}"
+                               placeholder="Votre nom"
+                               value="{{ form.last_name.value|default:'' }}"
+                               required>
+                        {% if form.last_name.errors %}
+                        <div class="error-message">
+                            <i class="fas fa-exclamation-circle error-icon"></i>
+                            {{ form.last_name.errors|first }}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Nom d'utilisateur -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-at form-label-icon"></i>
+                        Nom d'utilisateur
+                    </label>
+                    <input type="text" 
+                           name="username" 
+                           class="form-input {% if form.username.errors %}error{% endif %}"
+                           placeholder="Choisissez un nom d'utilisateur"
+                           value="{{ form.username.value|default:'' }}"
+                           required>
+                    {% if form.username.errors %}
+                    <div class="error-message">
+                        <i class="fas fa-exclamation-circle error-icon"></i>
+                        {{ form.username.errors|first }}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Email -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-envelope form-label-icon"></i>
+                        Adresse email
+                    </label>
+                    <input type="email" 
+                           name="email" 
+                           class="form-input {% if form.email.errors %}error{% endif %}"
+                           placeholder="votre@email.com"
+                           value="{{ form.email.value|default:'' }}"
+                           required>
+                    {% if form.email.errors %}
+                    <div class="error-message">
+                        <i class="fas fa-exclamation-circle error-icon"></i>
+                        {{ form.email.errors|first }}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Mot de passe -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-lock form-label-icon"></i>
+                        Mot de passe
+                    </label>
+                    <input type="password" 
+                           name="password1" 
+                           class="form-input {% if form.password1.errors %}error{% endif %}"
+                           placeholder="Créez un mot de passe sécurisé"
+                           required
+                           id="password1">
+                    <div class="password-strength">
+                        <div class="strength-bar" id="strengthBar"></div>
+                    </div>
+                    <div class="strength-text" id="strengthText">Faible</div>
+                    {% if form.password1.errors %}
+                    <div class="error-message">
+                        <i class="fas fa-exclamation-circle error-icon"></i>
+                        {{ form.password1.errors|first }}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Confirmation du mot de passe -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-lock form-label-icon"></i>
+                        Confirmer le mot de passe
+                    </label>
+                    <input type="password" 
+                           name="password2" 
+                           class="form-input {% if form.password2.errors %}error{% endif %}"
+                           placeholder="Retapez votre mot de passe"
+                           required
+                           id="password2">
+                    {% if form.password2.errors %}
+                    <div class="error-message">
+                        <i class="fas fa-exclamation-circle error-icon"></i>
+                        {{ form.password2.errors|first }}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Sélection du rôle -->
+                <div class="role-selector">
+                    <div class="role-title">
+                        <i class="fas fa-user-tag form-label-icon"></i>
+                        Je veux m'inscrire en tant que :
+                    </div>
+                    <div class="role-options">
+                        <div class="role-option">
+                            <input type="radio" 
+                                   name="role" 
+                                   value="foodie" 
+                                   id="role_foodie" 
+                                   class="role-input"
+                                   {% if form.role.value == 'foodie' or not form.role.value %}checked{% endif %}>
+                            <label for="role_foodie" class="role-label">
+                                <i class="fas fa-utensils role-icon"></i>
+                                <span class="role-name">Foodie</span>
+                                <span class="role-desc">Découvrir et cuisiner</span>
+                            </label>
+                        </div>
+                        <div class="role-option">
+                            <input type="radio" 
+                                   name="role" 
+                                   value="chef" 
+                                   id="role_chef" 
+                                   class="role-input"
+                                   {% if form.role.value == 'chef' %}checked{% endif %}>
+                            <label for="role_chef" class="role-label">
+                                <i class="fas fa-chef-hat role-icon"></i>
+                                <span class="role-name">Chef</span>
+                                <span class="role-desc">Partager mes recettes</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Conditions d'utilisation -->
+                <div class="terms">
+                    <input type="checkbox" 
+                           name="terms" 
+                           id="terms" 
+                           class="terms-checkbox"
+                           required>
+                    <label for="terms" class="terms-label">
+                        J'accepte les <a href="#" class="terms-link">conditions d'utilisation</a> 
+                        et la <a href="#" class="terms-link">politique de confidentialité</a> 
+                        de YummyBox. Je comprends que mes données seront utilisées pour améliorer 
+                        mon expérience sur la plateforme.
+                    </label>
+                </div>
+
+                <!-- Bouton d'inscription -->
+                <button type="submit" class="signup-btn" id="submitBtn">
+                    <i class="fas fa-user-plus signup-btn-icon"></i>
+                    Créer mon compte
+                </button>
+            </form>
+
+            <!-- Lien vers la connexion -->
+            <div class="login-link-container">
+                <p class="login-link-text">Déjà un compte ?</p>
+                <a href="{% url 'accounts:login' %}" class="login-link">
+                    <i class="fas fa-sign-in-alt login-link-icon"></i>
+                    Se connecter
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Vérification de la force du mot de passe
+        const passwordInput = document.getElementById('password1');
+        const strengthBar = document.getElementById('strengthBar');
+        const strengthText = document.getElementById('strengthText');
+        const confirmPasswordInput = document.getElementById('password2');
+        const submitBtn = document.getElementById('submitBtn');
+        const termsCheckbox = document.getElementById('terms');
+
+        if (passwordInput) {
+            passwordInput.addEventListener('input', function() {
+                const password = this.value;
+                let strength = 0;
+                
+                // Longueur minimale
+                if (password.length >= 8) strength++;
+                
+                // Contient des lettres minuscules et majuscules
+                if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++;
+                
+                // Contient des chiffres
+                if (/[0-9]/.test(password)) strength++;
+                
+                // Contient des caractères spéciaux
+                if (/[^A-Za-z0-9]/.test(password)) strength++;
+                
+                // Mise à jour de l'affichage
+                updatePasswordStrength(strength);
+                
+                // Vérification de la correspondance des mots de passe
+                checkPasswordMatch();
+            });
+        }
+
+        if (confirmPasswordInput) {
+            confirmPasswordInput.addEventListener('input', checkPasswordMatch);
+        }
+
+        function updatePasswordStrength(strength) {
+            if (!strengthBar || !strengthText) return;
+            
+            // Reset des classes
+            strengthBar.className = 'strength-bar';
+            
+            if (strength === 0) {
+                strengthBar.style.width = '0%';
+                strengthText.textContent = 'Faible';
+            } else if (strength === 1) {
+                strengthBar.classList.add('weak');
+                strengthText.textContent = 'Faible';
+            } else if (strength === 2) {
+                strengthBar.classList.add('medium');
+                strengthText.textContent = 'Moyen';
+            } else if (strength >= 3) {
+                strengthBar.classList.add('strong');
+                strengthText.textContent = 'Fort';
+            }
+        }
+
+        function checkPasswordMatch() {
+            if (!passwordInput || !confirmPasswordInput) return;
+            
+            const password = passwordInput.value;
+            const confirmPassword = confirmPasswordInput.value;
+            
+            if (confirmPassword === '') {
+                confirmPasswordInput.style.borderColor = '#e1e5eb';
+                return;
+            }
+            
+            if (password === confirmPassword) {
+                confirmPasswordInput.style.borderColor = '#28a745';
+                confirmPasswordInput.style.boxShadow = '0 0 0 3px rgba(40, 167, 69, 0.1)';
+            } else {
+                confirmPasswordInput.style.borderColor = '#dc3545';
+                confirmPasswordInput.style.boxShadow = '0 0 0 3px rgba(220, 53, 69, 0.1)';
+            }
+        }
+
+        // Validation du formulaire
+        const form = document.getElementById('signupForm');
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                let valid = true;
+                
+                // Vérifier les champs requis
+                const requiredInputs = form.querySelectorAll('input[required]');
+                requiredInputs.forEach(input => {
+                    if (!input.value.trim()) {
+                        input.classList.add('error');
+                        valid = false;
+                    }
+                });
+                
+                // Vérifier la correspondance des mots de passe
+                if (passwordInput && confirmPasswordInput && 
+                    passwordInput.value !== confirmPasswordInput.value) {
+                    confirmPasswordInput.classList.add('error');
+                    valid = false;
+                    
+                    // Afficher un message d'erreur
+                    let errorDiv = confirmPasswordInput.parentElement.querySelector('.match-error');
+                    if (!errorDiv) {
+                        errorDiv = document.createElement('div');
+                        errorDiv.className = 'error-message';
+                        errorDiv.innerHTML = '<i class="fas fa-exclamation-circle error-icon"></i> Les mots de passe ne correspondent pas';
+                        errorDiv.classList.add('match-error');
+                        confirmPasswordInput.parentElement.appendChild(errorDiv);
+                    }
+                }
+                
+                // Vérifier les conditions d'utilisation
+                if (termsCheckbox && !termsCheckbox.checked) {
+                    termsCheckbox.parentElement.style.outline = '2px solid #dc3545';
+                    termsCheckbox.parentElement.style.borderRadius = '10px';
+                    valid = false;
+                }
+                
+                if (!valid) {
+                    e.preventDefault();
+                    // Animation d'erreur
+                    form.style.animation = 'shake 0.5s';
+                    setTimeout(() => {
+                        form.style.animation = '';
+                    }, 500);
+                }
+            });
+            
+            // Supprimer les erreurs quand l'utilisateur commence à taper
+            const inputs = form.querySelectorAll('.form-input');
+            inputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    this.classList.remove('error');
+                    
+                    // Supprimer le message d'erreur de correspondance
+                    const matchError = this.parentElement.querySelector('.match-error');
+                    if (matchError) {
+                        matchError.remove();
+                    }
+                });
+            });
+            
+            if (termsCheckbox) {
+                termsCheckbox.addEventListener('change', function() {
+                    this.parentElement.style.outline = '';
+                });
+            }
+        }
+        
+        // Animation au focus
+        const inputs = document.querySelectorAll('.form-input');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'translateY(-2px)';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'translateY(0)';
+            });
+        });
+        
+        // Animation pour les options de rôle
+        const roleLabels = document.querySelectorAll('.role-label');
+        roleLabels.forEach(label => {
+            label.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-3px)';
+            });
+            
+            label.addEventListener('mouseleave', function() {
+                if (!this.previousElementSibling.checked) {
+                    this.style.transform = 'translateY(0)';
+                }
+            });
+        });
+        
+        // Ajouter le CSS pour l'animation shake
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+                20%, 40%, 60%, 80% { transform: translateX(5px); }
+            }
+        `;
+        document.head.appendChild(style);
+    });
+</script>
+{% endblock %}

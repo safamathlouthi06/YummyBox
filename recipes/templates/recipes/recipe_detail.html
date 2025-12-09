@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>{{ recipe.title }}</h1>
+
+{% if recipe.image %}
+<img src="{{ recipe.image.url }}" width="250">
+{% endif %}
+
+<p>{{ recipe.description }}</p>
+<p>Catégorie : {{ recipe.category }}</p>
+<p>Moyenne : {{ recipe.average_rating }}</p>
+
+<hr>
+
+<h3>Commentaires</h3>
+
+<ul>
+    {% for r in reviews %}
+    <li>{{ r.rating }} ★ — {{ r.comment }} ({{ r.user }})</li>
+    {% endfor %}
+</ul>
+
+{% if user.is_authenticated %}
+<form action="{% url 'recipes:recipe_review' recipe.id %}" method="POST">
+    {% csrf_token %}
+    {{ review_form.as_p }}
+    <button type="submit">Envoyer avis</button>
+</form>
+{% else %}
+<p>Connecte-toi pour laisser un avis.</p>
+{% endif %}
+
+<hr>
+
+{% if user == recipe.created_by %}
+<a href="{% url 'recipes:recipe_edit' recipe.id %}">Modifier</a>
+<a href="{% url 'recipes:recipe_delete' recipe.id %}">Supprimer</a>
+{% endif %}
+
+<a href="{% url 'recipes:recipe_list' %}">Retour aux recettes</a>
+
+{% endblock %}

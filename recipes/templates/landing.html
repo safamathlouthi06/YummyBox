@@ -1,0 +1,632 @@
+
+{% load static %}
+
+{% block extra_css %}
+<style>
+    /* Styles spécifiques pour la landing page */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+    
+    /* Reset pour la landing page uniquement */
+    .landing-page * {
+        font-family: 'Poppins', sans-serif;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
+    /* Header spécial pour la landing page */
+    .landing-header {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        padding: 1.2rem 2rem;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
+    }
+    
+   
+    
+    .landing-logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: white;
+        text-decoration: none;
+    }
+    
+    .landing-logo span {
+        font-size: 2rem;
+        animation: bounce 2s infinite;
+    }
+    
+    .landing-nav {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+    }
+    
+    .landing-nav-link {
+        color: white;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 1.1rem;
+        padding: 0.6rem 1.5rem;
+        border-radius: 30px;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .landing-nav-link.login {
+        background: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    
+    .landing-nav-link.signup {
+        background: linear-gradient(to right, #FF416C, #FF4B2B);
+        box-shadow: 0 4px 15px rgba(255, 75, 43, 0.3);
+    }
+    
+    .landing-nav-link:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+    
+    .landing-nav-link.login:hover {
+        background: rgba(255, 255, 255, 0.25);
+    }
+    
+    .landing-nav-link.signup:hover {
+        background: linear-gradient(to right, #FF4B2B, #FF416C);
+    }
+    
+    /* Menu mobile pour landing page */
+    .landing-menu-btn {
+        display: none;
+        background: none;
+        border: none;
+        color: white;
+        font-size: 1.8rem;
+        cursor: pointer;
+    }
+    
+    /* Contenu principal */
+    .landing-container {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 2rem;
+        background: linear-gradient(135deg, #ff7e5f, #feb47b, #86a8e7, #91eae4);
+        background-size: 400% 400%;
+        animation: gradientBG 15s ease infinite;
+        color: white;
+        position: relative;
+        overflow: hidden;
+        padding-top: 80px; /* Espace pour le header fixe */
+    }
+    
+    @keyframes gradientBG {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+    
+    @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+    
+    .landing-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.05);
+        z-index: 0;
+    }
+    
+    .content-wrapper {
+        max-width: 1200px;
+        z-index: 2;
+        position: relative;
+        padding: 2rem;
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        animation: fadeIn 1.5s ease-out;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    h1 {
+        font-size: 4.5rem;
+        margin-bottom: 1rem;
+        font-weight: 700;
+        text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+        letter-spacing: 1px;
+    }
+    
+    .logo-emoji {
+        display: inline-block;
+        animation: bounce 2s infinite;
+    }
+    
+    .tagline {
+        font-size: 1.8rem;
+        margin-bottom: 1.5rem;
+        font-weight: 300;
+        max-width: 800px;
+        line-height: 1.6;
+        text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+    }
+    
+    .highlight {
+        color: #FFD700;
+        font-weight: 600;
+    }
+    
+    .features {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 2rem;
+        margin: 3rem 0;
+    }
+    
+    .feature {
+        background: rgba(255, 255, 255, 0.15);
+        padding: 1.5rem;
+        border-radius: 15px;
+        width: 200px;
+        transition: transform 0.3s, background 0.3s;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .feature:hover {
+        transform: translateY(-10px);
+        background: rgba(255, 255, 255, 0.25);
+    }
+    
+    .feature-icon {
+        font-size: 2.5rem;
+        margin-bottom: 0.8rem;
+    }
+    
+    .feature-text {
+        font-size: 1.1rem;
+        font-weight: 500;
+    }
+    
+    .btn-group {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        flex-wrap: wrap;
+        margin-top: 2rem;
+    }
+    
+    .btn {
+        padding: 1.2rem 3rem;
+        font-size: 1.3rem;
+        font-weight: 600;
+        border-radius: 50px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        min-width: 200px;
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+    }
+    
+    .btn-primary {
+        background: linear-gradient(to right, #FF416C, #FF4B2B);
+        color: white;
+        border: none;
+    }
+    
+    .btn-secondary {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        border: 2px solid white;
+    }
+    
+    .btn:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
+    }
+    
+    .btn-primary:hover {
+        background: linear-gradient(to right, #FF4B2B, #FF416C);
+    }
+    
+    .btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.3);
+    }
+    
+    .btn::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.7s;
+        z-index: -1;
+    }
+    
+    .btn:hover::after {
+        left: 100%;
+    }
+    
+    .food-icons {
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+        margin: 3rem 0 2rem;
+        font-size: 2.5rem;
+        flex-wrap: wrap;
+    }
+    
+    .food-icon {
+        animation: float 6s ease-in-out infinite;
+        opacity: 0.9;
+    }
+    
+    .food-icon:nth-child(2) { animation-delay: 0.5s; }
+    .food-icon:nth-child(3) { animation-delay: 1s; }
+    .food-icon:nth-child(4) { animation-delay: 1.5s; }
+    .food-icon:nth-child(5) { animation-delay: 2s; }
+    
+    @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-15px); }
+    }
+    
+    .stats {
+        display: flex;
+        justify-content: center;
+        gap: 4rem;
+        margin-top: 3rem;
+        flex-wrap: wrap;
+    }
+    
+    .stat {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 1.2rem 2rem;
+        border-radius: 15px;
+        min-width: 150px;
+    }
+    
+    .stat-number {
+        font-size: 2.5rem;
+        font-weight: 700;
+        display: block;
+        color: #FFD700;
+    }
+    
+    .stat-text {
+        font-size: 1rem;
+        font-weight: 400;
+    }
+    
+    .testimonial {
+        font-style: italic;
+        margin: 3rem auto 1rem;
+        max-width: 700px;
+        font-size: 1.2rem;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 1.5rem;
+        border-radius: 15px;
+        position: relative;
+    }
+    
+    .testimonial::before, .testimonial::after {
+        content: '"';
+        font-size: 3rem;
+        color: rgba(255, 255, 255, 0.5);
+        position: absolute;
+    }
+    
+    .testimonial::before {
+        top: -10px;
+        left: 15px;
+    }
+    
+    .testimonial::after {
+        bottom: -30px;
+        right: 15px;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .landing-menu-btn {
+            display: block;
+        }
+        
+        .landing-nav {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: rgba(255, 126, 95, 0.95);
+            backdrop-filter: blur(15px);
+            padding: 1rem;
+            border-radius: 0 0 15px 15px;
+            flex-direction: column;
+            width: 200px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .landing-nav.active {
+            display: flex;
+        }
+        
+        .landing-nav-link {
+            width: 100%;
+            justify-content: center;
+        }
+        
+        h1 {
+            font-size: 3.2rem;
+        }
+        
+        .tagline {
+            font-size: 1.4rem;
+        }
+        
+        .btn {
+            padding: 1rem 2rem;
+            min-width: 180px;
+        }
+        
+        .features {
+            gap: 1rem;
+        }
+        
+        .feature {
+            width: 160px;
+            padding: 1rem;
+        }
+        
+        .stats {
+            gap: 1.5rem;
+        }
+        
+        .content-wrapper {
+            padding: 1.5rem;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        h1 {
+            font-size: 2.5rem;
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+        }
+        
+        .btn-group {
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .btn {
+            width: 100%;
+            max-width: 280px;
+        }
+        
+        .features {
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .feature {
+            width: 100%;
+            max-width: 280px;
+        }
+        
+        .landing-header {
+            padding: 1rem;
+        }
+        
+        .landing-logo {
+            font-size: 1.5rem;
+        }
+        
+        .landing-logo span {
+            font-size: 1.7rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="landing-page">
+    <!-- Header spécial pour la landing page -->
+    <header class="landing-header" id="landingHeader">
+        <a href="#" class="landing-logo">
+            <span>🍽️</span>
+            YummyBox
+        </a>
+        
+        <button class="landing-menu-btn" id="landingMenuBtn">
+            <i class="fas fa-bars"></i>
+        </button>
+        
+        <nav class="landing-nav" id="landingNav">
+            <a href="{% url 'accounts:login' %}" class="landing-nav-link login">
+                <i class="fas fa-sign-in-alt"></i>
+                 <span>👤</span>   Connexion
+            </a>
+            <a href="{% url 'accounts:signup' %}" class="landing-nav-link signup">
+                <i class="fas fa-user-plus"></i>
+                  <span>✍️</span> Inscription
+            </a>
+        </nav>
+    </header>
+
+    <!-- Contenu principal de la landing page -->
+    <div class="landing-container">
+        <div class="content-wrapper">
+            <h1>YummyBox <span class="logo-emoji">🍽️</span></h1>
+            <p class="tagline">Ton espace pour <span class="highlight">explorer</span>, <span class="highlight">cuisiner</span> et <span class="highlight">partager</span> des recettes faites avec amour ❤️</p>
+            
+            <div class="food-icons">
+                <div class="food-icon">🍕</div>
+                <div class="food-icon">🥗</div>
+                <div class="food-icon">🍰</div>
+                <div class="food-icon">🍣</div>
+                <div class="food-icon">🍝</div>
+            </div>
+            
+            <div class="features">
+                <div class="feature">
+                    <div class="feature-icon">📖</div>
+                    <div class="feature-text">Recettes illimitées</div>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">👨‍🍳</div>
+                    <div class="feature-text">Chefs passionnés</div>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">💬</div>
+                    <div class="feature-text">Communauté active</div>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">⭐</div>
+                    <div class="feature-text">Notations & avis</div>
+                </div>
+            </div>
+            
+            <div class="stats">
+                <div class="stat">
+                    <span class="stat-number">+5000</span>
+                    <span class="stat-text">Recettes disponibles</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">+10K</span>
+                    <span class="stat-text">Utilisateurs actifs</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">4.8</span>
+                    <span class="stat-text">Note moyenne</span>
+                </div>
+            </div>
+            
+            <p class="testimonial">"YummyBox a transformé ma façon de cuisiner ! Des recettes faciles à suivre et une communauté incroyable pour échanger des astuces." - Marie, membre depuis 2022</p>
+            
+
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Gestion du header au scroll
+        const landingHeader = document.getElementById('landingHeader');
+        
+        if (landingHeader) {
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    landingHeader.classList.add('scrolled');
+                } else {
+                    landingHeader.classList.remove('scrolled');
+                }
+            });
+        }
+        
+        // Menu mobile pour landing page
+        const landingMenuBtn = document.getElementById('landingMenuBtn');
+        const landingNav = document.getElementById('landingNav');
+        
+        if (landingMenuBtn && landingNav) {
+            landingMenuBtn.addEventListener('click', function() {
+                landingNav.classList.toggle('active');
+                landingMenuBtn.innerHTML = landingNav.classList.contains('active') 
+                    ? '<i class="fas fa-times"></i>' 
+                    : '<i class="fas fa-bars"></i>';
+            });
+            
+            // Fermer le menu en cliquant à l'extérieur
+            document.addEventListener('click', function(event) {
+                if (window.innerWidth <= 768) {
+                    if (!landingNav.contains(event.target) && !landingMenuBtn.contains(event.target)) {
+                        landingNav.classList.remove('active');
+                        landingMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                    }
+                }
+            });
+        }
+        
+        // Animation pour les statistiques
+        const statNumbers = document.querySelectorAll('.stat-number');
+        
+        if (statNumbers.length > 0) {
+            statNumbers.forEach(stat => {
+                const target = parseInt(stat.textContent.replace('+', '').replace(',', ''));
+                let current = 0;
+                const increment = target / 50;
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                    }
+                    stat.textContent = (stat.textContent.includes('+') ? '+' : '') + Math.floor(current).toLocaleString();
+                }, 30);
+            });
+        }
+        
+        // Effet parallaxe léger
+        const landingContainer = document.querySelector('.landing-container');
+        if (landingContainer) {
+            window.addEventListener('scroll', function() {
+                const scrolled = window.pageYOffset;
+                landingContainer.style.backgroundPosition = `0% ${scrolled * 0.05}%`;
+            });
+        }
+        
+        // Animation des boutons au survol
+        const buttons = document.querySelectorAll('.btn');
+        if (buttons.length > 0) {
+            buttons.forEach(button => {
+                button.addEventListener('mouseenter', function(e) {
+                    const x = e.pageX - this.offsetLeft;
+                    const y = e.pageY - this.offsetTop;
+                    
+                    this.style.setProperty('--x', x + 'px');
+                    this.style.setProperty('--y', y + 'px');
+                });
+            });
+        }
+    });
+</script>
+{% endblock %}
