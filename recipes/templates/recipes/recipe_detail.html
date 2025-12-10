@@ -1,43 +1,179 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h1>{{ recipe.title }}</h1>
+<style>
+/* --- PAGE --- */
+.detail-container {
+    max-width: 850px;
+    margin: 30px auto;
+    background: white;
+    padding: 25px 35px;
+    border-radius: 14px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.12);
+}
 
-{% if recipe.image %}
-<img src="{{ recipe.image.url }}" width="250">
-{% endif %}
+/* --- TITRE --- */
+.recipe-title {
+    font-size: 32px;
+    font-weight: 800;
+    margin-bottom: 10px;
+    text-align: center;
+    color: #333;
+}
 
-<p>{{ recipe.description }}</p>
-<p>Catégorie : {{ recipe.category }}</p>
-<p>Moyenne : {{ recipe.average_rating }}</p>
+/* --- IMAGE --- */
+.recipe-image {
+    width: 100%;
+    max-height: 350px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin: 15px 0 25px;
+}
 
-<hr>
+/* --- TEXTE --- */
+.recipe-info {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #555;
+}
 
-<h3>Commentaires</h3>
+/* --- SECTION COMMENTAIRES --- */
+.section-title {
+    margin-top: 40px;
+    font-size: 24px;
+    font-weight: 700;
+    color: #333;
+}
 
-<ul>
+/* --- LISTE AVIS --- */
+.review-box {
+    background: #f8f8f8;
+    padding: 12px 15px;
+    border-radius: 10px;
+    margin-bottom: 12px;
+}
+
+.review-rating {
+    font-size: 18px;
+    color: #ff9900;
+    font-weight: bold;
+}
+
+.review-user {
+    font-size: 13px;
+    color: #777;
+}
+
+/* --- FORM AVIS --- */
+.review-form {
+    margin-top: 15px;
+    background: #fafafa;
+    padding: 15px 20px;
+    border-radius: 10px;
+}
+
+.submit-btn {
+    background-color: #ff6b6b;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: none;
+    font-weight: bold;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.submit-btn:hover {
+    background-color: #ff4a4a;
+}
+
+/* --- BOUTONS BAS DE PAGE --- */
+.btn-actions {
+    margin-top: 35px;
+    display: flex;
+    gap: 15px;
+}
+
+.btn-small {
+    background: #333;
+    padding: 8px 14px;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+.btn-small:hover {
+    background: #555;
+}
+
+.btn-delete {
+    background: #ff4a4a;
+}
+
+.btn-delete:hover {
+    background: #e93636;
+}
+
+.back-btn {
+    margin-top: 20px;
+    display: inline-block;
+    color: #555;
+    text-decoration: underline;
+    font-weight: 600;
+}
+</style>
+
+
+<div class="detail-container">
+
+    <h1 class="recipe-title">{{ recipe.title }}</h1>
+
+    {% if recipe.image %}
+        <img src="{{ recipe.image.url }}" class="recipe-image">
+    {% endif %}
+
+    <p class="recipe-info">{{ recipe.description }}</p>
+    <p class="recipe-info"><strong>Catégorie :</strong> {{ recipe.category }}</p>
+    <p class="recipe-info"><strong>Moyenne :</strong> {{ recipe.average_rating }} ⭐</p>
+
+    <!-- COMMENTAIRES -->
+    <h3 class="section-title">Avis des utilisateurs</h3>
+
     {% for r in reviews %}
-    <li>{{ r.rating }} ★ — {{ r.comment }} ({{ r.user }})</li>
+    <div class="review-box">
+        <div class="review-rating">{{ r.rating }} ★</div>
+        <p>{{ r.comment }}</p>
+        <div class="review-user">— {{ r.user }}</div>
+    </div>
+    {% empty %}
+        <p style="color:#777;">Aucun avis pour le moment.</p>
     {% endfor %}
-</ul>
 
-{% if user.is_authenticated %}
-<form action="{% url 'recipes:recipe_review' recipe.id %}" method="POST">
-    {% csrf_token %}
-    {{ review_form.as_p }}
-    <button type="submit">Envoyer avis</button>
-</form>
-{% else %}
-<p>Connecte-toi pour laisser un avis.</p>
-{% endif %}
+    <!-- FORMULAIRE COMMENTAIRE -->
+    {% if user.is_authenticated %}
+        <div class="review-form">
+            <form action="{% url 'recipes:recipe_review' recipe.id %}" method="POST">
+                {% csrf_token %}
+                {{ review_form.as_p }}
+                <button class="submit-btn" type="submit">Envoyer avis</button>
+            </form>
+        </div>
+    {% else %}
+        <p style="margin-top:15px;">Connecte-toi pour laisser un avis.</p>
+    {% endif %}
 
-<hr>
+    <!-- ACTIONS (EDIT, DELETE) -->
+    {% if user == recipe.created_by %}
+    <div class="btn-actions">
+        <a href="{% url 'recipes:recipe_edit' recipe.id %}" class="btn-small">Modifier</a>
+        <a href="{% url 'recipes:recipe_delete' recipe.id %}" class="btn-small btn-delete">Supprimer</a>
+    </div>
+    {% endif %}
 
-{% if user == recipe.created_by %}
-<a href="{% url 'recipes:recipe_edit' recipe.id %}">Modifier</a>
-<a href="{% url 'recipes:recipe_delete' recipe.id %}">Supprimer</a>
-{% endif %}
+    <a href="{% url 'recipes:recipe_list' %}" class="back-btn">← Retour aux recettes</a>
 
-<a href="{% url 'recipes:recipe_list' %}">Retour aux recettes</a>
+</div>
 
 {% endblock %}

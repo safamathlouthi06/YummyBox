@@ -494,46 +494,7 @@
                 </div>
                 {% endif %}
 
-                <!-- Nom et Prénom -->
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label">
-                            <i class="fas fa-user form-label-icon"></i>
-                            Prénom
-                        </label>
-                        <input type="text" 
-                               name="first_name" 
-                               class="form-input {% if form.first_name.errors %}error{% endif %}"
-                               placeholder="Votre prénom"
-                               value="{{ form.first_name.value|default:'' }}"
-                               required>
-                        {% if form.first_name.errors %}
-                        <div class="error-message">
-                            <i class="fas fa-exclamation-circle error-icon"></i>
-                            {{ form.first_name.errors|first }}
-                        </div>
-                        {% endif %}
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">
-                            <i class="fas fa-user form-label-icon"></i>
-                            Nom
-                        </label>
-                        <input type="text" 
-                               name="last_name" 
-                               class="form-input {% if form.last_name.errors %}error{% endif %}"
-                               placeholder="Votre nom"
-                               value="{{ form.last_name.value|default:'' }}"
-                               required>
-                        {% if form.last_name.errors %}
-                        <div class="error-message">
-                            <i class="fas fa-exclamation-circle error-icon"></i>
-                            {{ form.last_name.errors|first }}
-                        </div>
-                        {% endif %}
-                    </div>
-                </div>
+                
 
                 <!-- Nom d'utilisateur -->
                 <div class="form-group">

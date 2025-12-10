@@ -1,7 +1,85 @@
-<h1>Ajouter / Modifier une recette</h1>
+{% extends 'base.html' %}
+{% block content %}
 
-<form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Valider</button>
-</form>
+<style>
+/* ----------- GLOBAL ----------- */
+.recipe-form-container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 25px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+    font-family: "Poppins", sans-serif;
+}
+
+.recipe-form-container h1 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 25px;
+    color: #ff5722;
+}
+
+/* ----------- FORM ----------- */
+.recipe-form-container form p {
+    margin-bottom: 15px;
+}
+
+.recipe-form-container label {
+    font-weight: 600;
+    color: #444;
+}
+
+.recipe-form-container input[type="text"],
+.recipe-form-container textarea,
+.recipe-form-container select,
+.recipe-form-container input[type="number"],
+.recipe-form-container input[type="file"] {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    background: #fafafa;
+    transition: 0.2s;
+}
+
+.recipe-form-container input:focus,
+.recipe-form-container textarea:focus,
+.recipe-form-container select:focus {
+    border-color: #ff5722;
+    background: #fff;
+    outline: none;
+}
+
+/* ----------- BUTTON ----------- */
+.recipe-form-container button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    background: #ff5722;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: 0.3s;
+}
+
+.recipe-form-container button:hover {
+    background: #e64a19;
+    transform: scale(1.02);
+}
+</style>
+
+<div class="recipe-form-container">
+    <h1>{{ form.instance.pk|yesno:"Modifier une recette,Ajouter une recette" }}</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Valider</button>
+    </form>
+</div>
+
+{% endblock %}
