@@ -1,22 +1,127 @@
 {% extends 'base.html' %}
+
 {% block content %}
-<h1>YummyBox — Recettes</h1>
+
+<style>
+/* --- TITRE DE PAGE --- */
+.page-title {
+    text-align: center;
+    font-size: 32px;
+    margin: 20px 0 30px;
+    font-weight: 700;
+    color: #333;
+}
+
+/* --- BOUTON AJOUT --- */
+.add-btn {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.btn-add {
+    background-color: #ff6b6b;
+    color: white;
+    padding: 10px 18px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s ease;
+}
+
+.btn-add:hover {
+    background-color: #ff4a4a;
+}
+
+/* --- GRILLE DES RECETTES --- */
+.recipe-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 25px;
+    padding: 20px 40px;
+}
+
+/* --- CARDS --- */
+.recipe-card {
+    background: white;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.recipe-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+
+.recipe-card a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* --- IMAGE --- */
+.recipe-img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.placeholder {
+    background: #f2f2f2;
+    height: 180px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #aaa;
+    font-size: 40px;
+}
+
+/* --- INFO --- */
+.recipe-info {
+    padding: 15px 18px;
+}
+
+.recipe-title {
+    font-size: 20px;
+    margin-bottom: 5px;
+    font-weight: 700;
+    color: #333;
+}
+
+.recipe-cat {
+    font-size: 14px;
+    color: #777;
+}
+
+</style>
+
+<h1 class="page-title">YummyBox — Recettes</h1>
 
 {% if user.is_authenticated and user.profile.role == 'chef' %}
-    <a href="{% url 'recipes:recipe_add' %}">Ajouter une recette</a>
+    <div class="add-btn">
+        <a class="btn-add" href="{% url 'recipes:recipe_add' %}">➕ Ajouter une recette</a>
+    </div>
 {% endif %}
 
-<ul>
+<div class="recipe-grid">
     {% for recipe in recipes %}
-    <li>
-        <a href="{% url 'recipes:recipe_detail' recipe.id %}">
-            {% if recipe.image %}
-                <img src="{{ recipe.image.url }}" width="120">
-            {% endif %}
-            <h3>{{ recipe.title }}</h3>
-        </a>
-        <p>{{ recipe.category }}</p>
-    </li>
+        <div class="recipe-card">
+            <a href="{% url 'recipes:recipe_detail' recipe.id %}">
+                
+                {% if recipe.image %}
+                    <img class="recipe-img" src="{{ recipe.image.url }}" alt="{{ recipe.title }}">
+                {% else %}
+                    <div class="placeholder">🍽️</div>
+                {% endif %}
+
+                <div class="recipe-info">
+                    <h3 class="recipe-title">{{ recipe.title }}</h3>
+                    <p class="recipe-cat">{{ recipe.category }}</p>
+                </div>
+
+            </a>
+        </div>
     {% endfor %}
-</ul>  
+</div>
+
 {% endblock %}

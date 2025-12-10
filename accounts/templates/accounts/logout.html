@@ -1,1 +1,41 @@
-<h1>a la prochaine</h1>
+{% extends "base.html" %}
+
+{% block title %}Déconnexion{% endblock %}
+
+{% block content %}
+
+<div style="
+    max-width: 600px;
+    margin: 60px auto;
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+">
+
+    <h1 style="color:#ff7e5f; font-size:2.2rem; margin-bottom:20px;">
+        Vous êtes maintenant déconnecté 🍽️
+    </h1>
+
+    <p style="font-size:1.1rem; color:#555; margin-bottom:30px;">
+        Merci d'avoir visité YummyBox.  
+        Revenez quand vous voulez pour découvrir de nouvelles recettes ❤️
+    </p>
+
+    <a href="{% url 'recipes:landing' %}" style="
+        display:inline-block;
+        padding:12px 25px;
+        background:#ff7e5f;
+        color:white;
+        text-decoration:none;
+        border-radius:30px;
+        font-weight:600;
+        transition:0.3s;
+    ">
+        Retour à l'accueil
+    </a>
+
+</div>
+
+{% endblock %}
