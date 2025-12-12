@@ -1,0 +1,16 @@
+replicaCount: 1
+
+image:
+  repository: safa06/mondjango
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 8000
+
+readinessProbe:
+  path: /healthz/
+  port: 8000
+  initialDelaySeconds: 5
+  periodSeconds: 10

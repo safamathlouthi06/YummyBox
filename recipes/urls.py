@@ -1,7 +1,8 @@
 from django.urls import path
 from . import views
 
-app_name = 'recipes'
+
+APP_NAME = 'recipes'
 
 urlpatterns = [
     path('', views.landing_page, name='landing'),  # Landing page

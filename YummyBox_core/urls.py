@@ -23,7 +23,8 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),   # on créera ce fichier
-    path('', include('recipes.urls')),             # pages recettes
+    path('', include('recipes.urls')),
+    
 ]
 
 if settings.DEBUG:
