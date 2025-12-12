@@ -5,6 +5,8 @@ from .forms import RecipeForm, ReviewForm
 from django.http import HttpResponseForbidden
 
 
+
+
 # Vérifie si l'utilisateur est chef
 def is_chef(user):
     return hasattr(user, 'profile') and user.profile.role == 'chef'
