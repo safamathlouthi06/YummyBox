@@ -1,0 +1,212 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+.detail-container {
+    max-width: 850px;
+    margin: 30px auto;
+    background: white;
+    padding: 25px 35px;
+    border-radius: 14px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.12);
+}
+
+.recipe-title {
+    font-size: 32px;
+    font-weight: 800;
+    margin-bottom: 10px;
+    text-align: center;
+    color: #333;
+}
+
+.recipe-image {
+    width: 100%;
+    max-height: 350px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin: 15px 0 25px;
+}
+
+.recipe-info {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #555;
+}
+
+/* BOUTON FAVORI */
+.favorite-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 30px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+    text-decoration: none;
+    margin: 15px 0;
+}
+
+.favorite-btn.active {
+    background: #ff4757;
+    color: white;
+    box-shadow: 0 4px 15px rgba(255,71,87,0.3);
+}
+
+.favorite-btn.inactive {
+    background: #f0f0f0;
+    color: #555;
+}
+
+.favorite-btn:hover {
+    transform: translateY(-2px);
+}
+
+.section-title {
+    margin-top: 40px;
+    font-size: 24px;
+    font-weight: 700;
+    color: #333;
+}
+
+.review-box {
+    background: #f8f8f8;
+    padding: 12px 15px;
+    border-radius: 10px;
+    margin-bottom: 12px;
+}
+
+.review-rating {
+    font-size: 18px;
+    color: #ff9900;
+    font-weight: bold;
+}
+
+.review-user {
+    font-size: 13px;
+    color: #777;
+}
+
+.review-form {
+    margin-top: 15px;
+    background: #fafafa;
+    padding: 15px 20px;
+    border-radius: 10px;
+}
+
+.submit-btn {
+    background-color: #ff6b6b;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: none;
+    font-weight: bold;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.submit-btn:hover {
+    background-color: #ff4a4a;
+}
+
+.btn-actions {
+    margin-top: 35px;
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.btn-small {
+    background: #333;
+    padding: 8px 14px;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+.btn-small:hover { background: #555; }
+
+.btn-delete { background: #ff4a4a; }
+.btn-delete:hover { background: #e93636; }
+
+.back-btn {
+    margin-top: 20px;
+    display: inline-block;
+    color: #555;
+    text-decoration: underline;
+    font-weight: 600;
+}
+</style>
+
+<div class="detail-container">
+
+    <h1 class="recipe-title">{{ recipe.title }}</h1>
+
+    {% if recipe.image %}
+        <img src="{{ recipe.image.url }}" class="recipe-image" alt="{{ recipe.title }}">
+    {% endif %}
+
+    <p class="recipe-info">{{ recipe.description }}</p>
+    <p class="recipe-info"><strong>Catégorie :</strong> {{ recipe.category }}</p>
+    <p class="recipe-info"><strong>Moyenne :</strong>
+        {% if recipe.average_rating %}
+            ⭐ {{ recipe.average_rating }} / 5
+        {% else %}
+            Pas encore noté
+        {% endif %}
+    </p>
+
+    <!-- BOUTON FAVORI -->
+    {% if user.is_authenticated %}
+    <a href="{% url 'recipes:toggle_favorite' recipe.id %}"
+       class="favorite-btn {% if is_favorite %}active{% else %}inactive{% endif %}">
+        {% if is_favorite %}
+            ❤️ Retirer des favoris
+        {% else %}
+            🤍 Ajouter aux favoris
+        {% endif %}
+    </a>
+    {% endif %}
+
+    <!-- COMMENTAIRES -->
+    <h3 class="section-title">Avis des utilisateurs</h3>
+
+    {% for r in reviews %}
+    <div class="review-box">
+        <div class="review-rating">{{ r.rating }} ★</div>
+        <p>{{ r.comment }}</p>
+        <div class="review-user">— {{ r.user }}</div>
+    </div>
+    {% empty %}
+        <p style="color:#777;">Aucun avis pour le moment.</p>
+    {% endfor %}
+
+    {% if user.is_authenticated %}
+        <div class="review-form">
+            <form action="{% url 'recipes:recipe_review' recipe.id %}" method="POST">
+                {% csrf_token %}
+                {{ review_form.as_p }}
+                <button class="submit-btn" type="submit">Envoyer avis</button>
+            </form>
+        </div>
+    {% else %}
+        <p style="margin-top:15px;">Connecte-toi pour laisser un avis.</p>
+    {% endif %}
+
+    {% if user == recipe.created_by %}
+    <div class="btn-actions">
+        <a href="{% url 'recipes:recipe_edit' recipe.id %}" class="btn-small">✏️ Modifier</a>
+        <a href="{% url 'recipes:recipe_delete' recipe.id %}" class="btn-small btn-delete">🗑️ Supprimer</a>
+    </div>
+    {% endif %}
+
+    <a href="{% url 'recipes:recipe_list' %}" class="back-btn">← Retour aux recettes</a>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+.profile-container {
+    max-width: 700px;
+    margin: 40px auto;
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.profile-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #ff7e5f;
+    margin-bottom: 15px;
+}
+
+.profile-avatar-placeholder {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ff7e5f, #feb47b);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 50px;
+    color: white;
+    margin: 0 auto 15px;
+    font-weight: bold;
+}
+
+.profile-name {
+    font-size: 26px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.profile-role {
+    display: inline-block;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    background: {% if profile.role == 'chef' %}#ff7e5f{% else %}#86a8e7{% endif %};
+    color: white;
+}
+
+.profile-bio {
+    color: #666;
+    font-size: 15px;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.profile-stats {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin: 25px 0;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 12px;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-number {
+    font-size: 28px;
+    font-weight: 700;
+    color: #ff7e5f;
+    display: block;
+}
+
+.stat-label {
+    font-size: 13px;
+    color: #888;
+}
+
+.edit-btn {
+    display: inline-block;
+    padding: 10px 25px;
+    background: linear-gradient(135deg, #ff7e5f, #feb47b);
+    color: white;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.edit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255,126,95,0.3);
+}
+</style>
+
+<div class="profile-container">
+
+    {% if profile.avatar %}
+        <img src="{{ profile.avatar.url }}" class="profile-avatar" alt="Avatar">
+    {% else %}
+        <div class="profile-avatar-placeholder">
+            {{ request.user.username|first|upper }}
+        </div>
+    {% endif %}
+
+    <h1 class="profile-name">{{ request.user.username }}</h1>
+
+    <span class="profile-role">
+        {% if profile.role == 'chef' %}👨‍🍳 Chef{% else %}🍴 Foodie{% endif %}
+    </span>
+
+    {% if profile.bio %}
+        <p class="profile-bio">{{ profile.bio }}</p>
+    {% else %}
+        <p class="profile-bio" style="color:#bbb; font-style:italic;">Aucune bio renseignée.</p>
+    {% endif %}
+
+    <div class="profile-stats">
+        {% if profile.role == 'chef' %}
+        <div class="stat-item">
+            <span class="stat-number">{{ request.user.recipes.count }}</span>
+            <span class="stat-label">Recettes publiées</span>
+        </div>
+        {% endif %}
+        <div class="stat-item">
+            <span class="stat-number">{{ request.user.reviews.count }}</span>
+            <span class="stat-label">Avis donnés</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-number">{{ request.user.favorites.count }}</span>
+            <span class="stat-label">Favoris</span>
+        </div>
+    </div>
+
+    <a href="{% url 'accounts:profile_edit' %}" class="edit-btn">
+        ✏️ Modifier mon profil
+    </a>
+</div>
+
+{% endblock %}
